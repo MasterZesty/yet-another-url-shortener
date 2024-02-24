@@ -2,8 +2,11 @@ from flask import Flask, request, jsonify
 from db import DB
 from models import ShortenedURL
 from sqlalchemy.exc import IntegrityError
+from flask_cors import CORS
+
 
 app = Flask(__name__)
+CORS(app)
 
 DB_URI = "sqlite:///url_shortner.db"
 db = DB(DB_URI)
