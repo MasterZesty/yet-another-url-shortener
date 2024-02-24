@@ -88,6 +88,8 @@ function shortenUrl() {
             console.error('Error:', error);
             // Handle error scenarios if needed
         });
+
+    return;
     
 }
 
