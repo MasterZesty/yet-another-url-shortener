@@ -77,6 +77,7 @@ function shortenUrl() {
         .then(response => response.json())
         .then(result => {
             if (result.status === "success") {
+                // console.log(result)
                 errorMessage.textContent = `Shortened URL created successfully!`;
                 errorMessage.classList.remove('text-red-600');
                 errorMessage.classList.add('text-green-600');
@@ -87,7 +88,6 @@ function shortenUrl() {
             console.error('Error:', error);
             // Handle error scenarios if needed
         });
-
     
 }
 
