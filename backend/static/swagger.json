@@ -1,0 +1,70 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Access API",
+      "version": "1.0.0"
+    },
+    "paths": {
+
+      "/api/v1/alias_available/{custom_alias}": {
+        "get": {
+          "description": "custom alias availability check",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "custom_alias",
+              "in": "path",
+              "description": "custom alias",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation"
+            }
+          }
+        }
+      },
+
+      "/api/v1/shorten": {
+        "post": {
+          "description": "shortens a url",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "original_url": {
+                    "type": "string",
+                    "description": "The original URL to shorten"
+                  },
+                  "custom_alias": {
+                    "type": "string",
+                    "description": "The custom alias to use"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "shortens a url successful"
+            }
+          }
+        }
+      }
+    }
+  }
+  
