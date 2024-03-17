@@ -15,8 +15,10 @@ app.use(bodyParser.json());
 app.get('/', (req, res) => {
   const url = '';
   const alias = '';
-  const method = "GET"
-  res.render('url_shortner', {url, alias, method});
+  const method = 'GET';
+  const errorMessage = '';
+  const yasu = '';
+  res.render('url_shortner', {url, alias, method, errorMessage, yasu});
 });
 
 app.post('/', (req, res) => {
@@ -42,42 +44,20 @@ app.post('/', (req, res) => {
       .then(response => response.json())
       .then(result => {
           if (result.status === "success") {
-              // console.log(result)
-              errorMessage.textContent = `Shortened URL created successfully!`;
-              errorMessage.classList.remove('text-red-600');
-              errorMessage.classList.add('text-green-600');
-              // console.log("Shortened URL created successfully:", result.data.url);
+            const errorMessage = "Shortened URL created successfully  : "
+            const yasu = url + alias
+            res.render('url_shortner', {url, alias, method, errorMessage, yasu});
           }
       })
       .catch(error => {
           console.error('Error:', error);
-          // Handle error scenarios if needed
+          const errorMessage = "Failed to create shortened URL   ";
+          const yasu = ''
+          res.render('url_shortner', {url, alias, method, errorMessage, yasu});
       });
-
-  res.render('url_shortner', {url, alias, method});
 });
 
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
-
-
-function shortenUrl() {
-  const urlInput = document.getElementById('original_url');
-  const urlValue = urlInput.value;
-  const aliasInput = document.getElementById('alias');
-  const aliasValue = aliasInput.value;
-  const errorMessage = document.getElementById('error_msg')
-
-  // if (!urlValue || !aliasValue) {
-  //     errorMessage.textContent = `Please provide both url and alias.`;
-  //     errorMessage.classList.remove('text-green-600');
-  //     errorMessage.classList.add('text-red-600');
-  //     // console.error("Please provide both original_url and alias parameters.");
-  //     return;
-  // }
-
-  return;
-  
-}
