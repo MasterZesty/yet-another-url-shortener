@@ -45,7 +45,7 @@ app.post('/', (req, res) => {
       .then(result => {
           if (result.status === "success") {
             const errorMessage = "Shortened URL created successfully  : "
-            const yasu = url + alias
+            const yasu = url + alias // this url should be host url not this url
             res.render('url_shortner', {url, alias, method, errorMessage, yasu});
           }
       })
