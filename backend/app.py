@@ -12,6 +12,11 @@ CORS(app)
 
 SWAGGER_URL="/swagger"
 API_URL="/static/swagger.json"
+BACKEND_HOSTNAME = "http://127.0.0.1"
+BACKEND_PORT = "5000"
+FRONTEND_HOSTNAME = "http://127.0.0.1"
+FRONTEND_PORT = "3000"
+
 
 swagger_ui_blueprint = get_swaggerui_blueprint(
     SWAGGER_URL,
@@ -30,9 +35,9 @@ db = DB(DB_URI)
 
 @app.route("/api/v1/shorten", methods=['POST'])
 def shorten_url():
-    '''
-    shortens a url.
-    '''
+    """shortens a url.
+    """
+
     data = request.get_json()
 
     url = data.get("original_url")
@@ -68,7 +73,7 @@ def shorten_url():
         shorten_url = {
             "status": "success",
             "data": {
-                "url": url,
+                "url": f"{FRONTEND_HOSTNAME}:{FRONTEND_PORT}/{alias}",
                 "alias": alias
             },
             "message": "null"
@@ -86,9 +91,8 @@ def shorten_url():
 
 @app.route("/api/v1/alias_available/<custom_alias>", methods=['GET'])
 def alias_available(custom_alias: str):
-    '''
-    custom alias availability check
-    '''
+    """custom alias availability check
+    """
 
     res = db.session.query(ShortenedURL).filter_by(short_code=custom_alias).first()
 
@@ -112,6 +116,39 @@ def alias_available(custom_alias: str):
     }
 
     return jsonify(is_alias_available), 200
+
+@app.route("/api/v1/expand", methods=["GET"])
+def expand_url():
+    """"expand custom alias to original url
+    """
+    
+    alias = request.args.get('custom_alias')
+    
+    result = db.session.query(ShortenedURL).filter_by(short_code=alias).first()
+    
+    if result:
+        resdict = {column.name: getattr(result, column.name) for column in result.__table__.columns}
+        
+        expand_url = {
+            "status": "success",
+            "data": {
+                "redirct_url" : resdict.get("original_url")
+            },
+            "message": "null"
+        }
+
+        return jsonify(expand_url), 200
+
+    expand_url = {
+        "status": "error",
+        "data": {
+            "redirect_url" : ""
+        },
+        "message": "url with magic code does not exist"
+    }
+
+    return jsonify(expand_url), 404
+
 
 
 if __name__ == "__main__":

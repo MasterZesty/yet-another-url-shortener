@@ -64,6 +64,29 @@
             }
           }
         }
+      },
+
+      "/api/v1/expand": {
+        "get": {
+          "description": "expand custom alias to original url",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "custom_alias",
+              "in": "body",
+              "description": "custom alias",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation"
+            }
+          }
+        }
       }
     }
   }
